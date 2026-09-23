@@ -1,0 +1,840 @@
+<title>Fallzahlen 2021–2026</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --bg: #f7f7f4;
+    --surface: #ffffff;
+    --surface-2: #f1f1ec;
+    --ink: #17140f;
+    --ink-2: #55524a;
+    --muted: #918d82;
+    --grid: #e4e2d9;
+    --axis: #c7c4b8;
+    --border: rgba(23,20,15,0.09);
+    --season: #e8eef6;
+    --season-edge: #c9d6e8;
+
+    --c-ambulanz: #2a78d6;
+    --c-nue1:     #eb6834;
+    --c-sa:       #1baf7a;
+    --c-safahrt:  #7a5cc9;
+    --c-nac:      #eda100;
+    --c-komb:     #008300;
+    --c-pz:       #e87ba4;
+
+    --font-display: "Archivo", "Segoe UI", sans-serif;
+    --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "Consolas", monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg: #121210;
+      --surface: #1b1a17;
+      --surface-2: #211f1b;
+      --ink: #f5f4f0;
+      --ink-2: #c7c3b8;
+      --muted: #8d897e;
+      --grid: #2d2b26;
+      --axis: #3a3833;
+      --border: rgba(255,255,255,0.10);
+      --season: #1b2330;
+      --season-edge: #2b3a50;
+
+      --c-ambulanz: #3987e5;
+      --c-nue1:     #d95926;
+      --c-sa:       #199e70;
+      --c-safahrt:  #8d72dc;
+      --c-nac:      #c98500;
+      --c-komb:     #008300;
+      --c-pz:       #d55181;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg: #121210;
+    --surface: #1b1a17;
+    --surface-2: #211f1b;
+    --ink: #f5f4f0;
+    --ink-2: #c7c3b8;
+    --muted: #8d897e;
+    --grid: #2d2b26;
+    --axis: #3a3833;
+    --border: rgba(255,255,255,0.10);
+    --season: #1b2330;
+    --season-edge: #2b3a50;
+
+    --c-ambulanz: #3987e5;
+    --c-nue1:     #d95926;
+    --c-sa:       #199e70;
+    --c-safahrt:  #8d72dc;
+    --c-nac:      #c98500;
+    --c-komb:     #008300;
+    --c-pz:       #d55181;
+  }
+
+  *{ box-sizing: border-box; }
+  body{ background: var(--bg); color: var(--ink); font-family: var(--font-body); }
+
+  .page{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 56px 28px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 52px;
+  }
+  @media (max-width: 520px){
+    .page{ padding: 36px 16px 64px; }
+  }
+
+  /* header */
+  .hero{ display:flex; flex-direction:column; gap:14px; max-width: 640px; }
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+  h1{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .lede{
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin: 0;
+    max-width: 58ch;
+  }
+
+  /* shared section chrome */
+  section{ display:flex; flex-direction:column; gap:18px; }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  .section-label{
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .section-note{
+    font-size: 12.5px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+  }
+  .section-intro{
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin: 0;
+    max-width: 68ch;
+  }
+
+  /* KPI tiles */
+  .kpi-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 720px){
+    .kpi-grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 460px){
+    .kpi-grid{ grid-template-columns: 1fr; }
+  }
+  .kpi-tile{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+  }
+  .kpi-cat{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+  .kpi-dot{ width:8px; height:8px; border-radius:50%; flex:none; }
+  .kpi-value{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 27px;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi-value sup{
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+  .kpi-delta{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    width: fit-content;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-2);
+    background: var(--surface-2);
+    border-radius: 5px;
+    padding: 2px 7px;
+  }
+  .kpi-h1{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    padding-top: 2px;
+    border-top: 1px solid var(--border);
+    margin-top: 2px;
+  }
+  .kpi-h1 b{ color: var(--ink-2); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  /* chart panels */
+  .chart-key{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 10px 18px;
+    font-size: 12.5px;
+    color: var(--ink-2);
+  }
+  .chart-key span{ display:inline-flex; align-items:center; gap:6px; }
+  .key-swatch{ width:16px; height:10px; border-radius:2px; flex:none; }
+  .key-swatch.dashed{ border: 1.5px dashed var(--muted); background:none; }
+  .key-swatch.hatch{ background-image: repeating-linear-gradient(45deg, var(--muted) 0 1.5px, transparent 1.5px 5px); border-radius:2px; }
+  .key-swatch.season{ background: var(--season); border: 1px solid var(--season-edge); }
+  .key-line{ width:20px; height:10px; flex:none; display:block; overflow:visible; }
+
+  .chart-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .trend-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 16px;
+  }
+  .chart-card{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 14px 10px;
+    display:flex;
+    flex-direction:column;
+    gap: 4px;
+  }
+  .chart-title{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-weight: 600;
+    font-size: 14px;
+    padding-left: 4px;
+  }
+  .chart-head{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap: 6px 10px;
+    padding: 4px 4px 0;
+  }
+  .trend-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--ink-2);
+    background: var(--surface-2);
+    border-radius: 5px;
+    padding: 2px 7px;
+    font-variant-numeric: tabular-nums;
+  }
+  .trend-chip.weak{ color: var(--muted); }
+  .chart-sub{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .chart-dot{ width:9px; height:9px; border-radius:50%; flex:none; }
+  .panel-svg{ width:100%; height:auto; display:block; overflow:visible; }
+  .gridline{ stroke: var(--grid); stroke-width: 1; }
+  .baseline{ stroke: var(--axis); stroke-width: 1.2; }
+  .axis-label{ fill: var(--muted); font: 500 8.5px var(--font-mono); }
+  .value-label{ fill: var(--ink-2); font: 500 9.5px var(--font-mono); }
+  .proj-label{ fill: var(--muted); font: 500 8.5px var(--font-mono); }
+  .year-label{ fill: var(--ink-2); font: 500 9.5px var(--font-mono); }
+  .partial-label{ fill: var(--muted); font: 500 8px var(--font-mono); letter-spacing:0.03em; }
+  .season-band{ fill: var(--season); }
+  .season-label{ fill: var(--muted); font: 500 7.5px var(--font-mono); letter-spacing:0.04em; }
+  .reg-line{ stroke: var(--ink-2); stroke-width: 1.3; stroke-dasharray: 1.5 3; stroke-linecap: round; fill: none; }
+  .hit-guide{ stroke: var(--axis); stroke-width: 1; opacity: 0; }
+  .hit:hover .hit-guide, .hit:focus-visible .hit-guide{ opacity: 1; }
+  .hit:hover .hit-dot, .hit:focus-visible .hit-dot{ r: 4; }
+  .hit-dot{ transition: r .1s ease; }
+  .bar{ transition: filter .15s ease; }
+  .hoverable{ cursor: pointer; outline: none; }
+  .hoverable:focus-visible .bar,
+  .hoverable:focus-visible rect{ filter: brightness(0.88); }
+  @media (hover:hover){
+    .hoverable:hover .bar{ filter: brightness(0.88); }
+  }
+  .missing-marker rect{ transition: filter .15s ease; }
+  .hoverable:hover rect, .hoverable:focus-visible rect{ filter: brightness(0.85); }
+  .hit.hoverable:hover rect, .hit.hoverable:focus-visible rect{ filter: none; }
+  @media (prefers-reduced-motion: reduce){
+    .bar, .hit-dot, #tooltip{ transition: none; }
+  }
+
+  /* tooltip */
+  #tooltip{
+    position: fixed;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 7px 10px;
+    border-radius: 7px;
+    max-width: 260px;
+    opacity: 0;
+    transform: translate(-50%, calc(-100% - 10px));
+    transition: opacity .1s ease;
+    z-index: 20;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    white-space: pre-line;
+  }
+  #tooltip.visible{ opacity: 1; }
+
+  /* table */
+  .table-wrap{ overflow-x:auto; border: 1px solid var(--border); border-radius: 10px; }
+  table{ border-collapse: collapse; width: 100%; min-width: 940px; background: var(--surface); }
+  th, td{
+    padding: 10px 14px;
+    text-align: right;
+    font-size: 13px;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+  th:first-child, td:first-child{ text-align:left; font-family: var(--font-body); font-weight:500; }
+  thead th{
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 12.5px;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--border);
+    white-space: normal;
+    line-height: 1.35;
+    min-width: 110px;
+    vertical-align: bottom;
+  }
+  tbody tr:not(:last-child) td{ border-bottom: 1px solid var(--border); }
+  tbody tr:last-child td{ color: var(--ink-2); font-style: italic; }
+  .cell-note{ color: var(--muted); font-style: italic; }
+
+  .footnotes{
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+    max-width: 74ch;
+  }
+</style>
+
+<div class="page">
+
+  <header class="hero">
+    <p class="eyebrow">Fallzahlen · 2021 bis 1. Halbjahr 2026</p>
+    <h1>Fallzahlen im Jahresvergleich</h1>
+    <p class="lede">Anzahl Behandlungen in der Notfallambulanz Lehrter Straße und der Straßenambulanz, sowie Anzahl Übernachtungen verschiedener Personen in den Notübernachtungen Lehrter Straße und Notübernachtung am Containerbahnhof (einzeln und in Summe) sowie im Pflegezimmer Lehrter Straße über sechs Jahre. Inklusive Hochrechnung (simple Verdopplung) für das laufende Jahr auf Basis des ersten Halbjahrs. Dazu der Monatsverlauf seit 2024, bereinigt um Schließzeiten.</p>
+  </header>
+
+  <section aria-labelledby="kpi-head">
+    <div class="section-head">
+      <span class="section-label" id="kpi-head">Kennzahlen · letztes vollständiges Jahr 2025</span>
+      <span class="section-note">Δ ggü. 2024</span>
+    </div>
+    <div class="kpi-grid" id="kpiGrid"></div>
+  </section>
+
+  <section aria-labelledby="chart-head">
+    <div class="section-head">
+      <span class="section-label" id="chart-head">Verlauf 2021 – 2026</span>
+    </div>
+    <div class="chart-key">
+      <span><i class="key-swatch" style="background:var(--c-ambulanz)"></i>Jahreswert</span>
+      <span><i class="key-swatch dashed"></i>Hochrechnung (1. HJ × 2)</span>
+      <span><i class="key-swatch hatch"></i>keine Einzeldaten – Details in Tabelle</span>
+    </div>
+    <div class="chart-grid" id="chartGrid"></div>
+  </section>
+
+  <section aria-labelledby="trend-head">
+    <div class="section-head">
+      <span class="section-label" id="trend-head">Monatsverlauf pro Öffnungstag · Jan 2024 – Jun 2026</span>
+      <span class="section-note">Trend: lineare Regression · p: Mann-Kendall</span>
+    </div>
+    <p class="section-intro">Jeder Punkt ist ein Monatswert geteilt durch die Zahl der Tage, an denen geöffnet war. So erscheint ein Monat mit Schließzeit nicht als Einbruch. Die kräftige Linie glättet über drei Monate, die gepunktete Linie zeigt den linearen Trend. Blau hinterlegt ist die Kältehilfesaison (1. November bis 15. April).</p>
+    <div class="chart-key">
+      <span><svg class="key-line" viewBox="0 0 20 10" aria-hidden="true"><line x1="0" y1="5" x2="20" y2="5" stroke="var(--muted)" stroke-width="1" opacity=".7"/><circle cx="10" cy="5" r="2.2" fill="var(--muted)"/></svg>Monatswert pro Öffnungstag</span>
+      <span><svg class="key-line" viewBox="0 0 20 10" aria-hidden="true"><line x1="0" y1="5" x2="20" y2="5" stroke="var(--muted)" stroke-width="3" stroke-linecap="round"/></svg>gleitender 3-Monats-Ø</span>
+      <span><svg class="key-line" viewBox="0 0 20 10" aria-hidden="true"><line x1="1" y1="5" x2="19" y2="5" class="reg-line"/></svg>Lineare Regression</span>
+      <span><i class="key-swatch season"></i>Kältehilfesaison</span>
+    </div>
+    <div class="trend-grid" id="trendGrid"></div>
+    <p class="footnotes">
+      Signifikant heißt p &lt; 0,05. Bei 30 Monatswerten und starker Saisonabhängigkeit sind das Hinweise, keine Beweise. Die Notübernachtung Lehrter Straße öffnet nur in der Kältehilfesaison. Für sie ist statt eines Trends der Tagesdurchschnitt je Saison angegeben. Berücksichtigte Schließzeiten: Ambulanz 17.08.–02.09.2024 und 01.–08.08.2025, Pflegezimmer 19.04.–07.05.2024, Notübernachtung Lehrter Straße jeweils ab 16.04. Der Juni-2026-Wert der Notübernachtung am Containerbahnhof fehlt in der Quelle.
+    </p>
+  </section>
+
+  <section aria-labelledby="table-head">
+    <div class="section-head">
+      <span class="section-label" id="table-head">Datentabelle</span>
+    </div>
+    <div class="table-wrap">
+      <table id="dataTable"></table>
+    </div>
+    <p class="footnotes">
+      * 2026 nur 1. Halbjahr, keine Hochrechnung in der Tabelle. Die Notübernachtungen Lehrter Straße und am Containerbahnhof wurden 2021 und 2022 nicht getrennt erfasst; für diese Jahre ist nur der gemeinsame Gesamtwert unter „Nü + NaC gesamt“ ausgewiesen. Das Pflegezimmer öffnete erst 5/22, vollständige Daten sind erst ab 2023 dargestellt.
+    </p>
+  </section>
+
+</div>
+
+<div id="tooltip" role="status"></div>
+
+<script>
+(function(){
+  const categories = [
+    { key:'ambulanz', label:'Ambulanz', color:'var(--c-ambulanz)',
+      years:[
+        {year:'2021', value:1682},
+        {year:'2022', value:1284},
+        {year:'2023', value:1502},
+        {year:'2024', value:1476},
+        {year:'2025', value:1267},
+        {year:'2026', value:564, partial:true},
+      ]},
+    { key:'sa', label:'Straßenambulanz Behandlungen', color:'var(--c-sa)',
+      years:[
+        {year:'2021', value:762},
+        {year:'2022', value:658},
+        {year:'2023', value:838},
+        {year:'2024', value:530},
+        {year:'2025', value:950},
+        {year:'2026', value:329, partial:true},
+      ]},
+    { key:'pz', label:'Pflegezimmer', color:'var(--c-pz)',
+      years:[
+        {year:'2021', missing:true, note:'Pflegezimmer 2021: -'},
+        {year:'2022', missing:true, note:'Pflegezimmer 2022: -'},
+        {year:'2023', value:1232},
+        {year:'2024', value:1621},
+        {year:'2025', value:1460},
+        {year:'2026', value:418, partial:true},
+      ]},
+    { key:'nue1', label:'Notübernachtung Lehrter Straße', color:'var(--c-nue1)',
+      years:[
+        {year:'2021', missing:true, note:'Notübernachtung Lehrter Straße 2021: -'},
+        {year:'2022', missing:true, note:'Notübernachtung Lehrter Straße 2022: -'},
+        {year:'2023', value:926},
+        {year:'2024', value:863},
+        {year:'2025', value:950},
+        {year:'2026', value:254, partial:true},
+      ]},
+    { key:'nac', label:'Notübernachtung am Containerbahnhof', color:'var(--c-nac)',
+      years:[
+        {year:'2021', missing:true, note:'Notübernachtung am Containerbahnhof 2021: -'},
+        {year:'2022', missing:true, note:'Notübernachtung am Containerbahnhof 2022: -'},
+        {year:'2023', value:545},
+        {year:'2024', value:441},
+        {year:'2025', value:802},
+        {year:'2026', value:254, partial:true},
+      ]},
+    { key:'komb', label:'Nü. Lehrter Str und Cont.bhf. kombiniert', color:'var(--c-komb)',
+      years:[
+        {year:'2021', value:1028},
+        {year:'2022', value:1316},
+        {year:'2023', value:1471},
+        {year:'2024', value:1304},
+        {year:'2025', value:1752},
+        {year:'2026', value:508, partial:true},
+      ]},
+  ];
+
+  const fmt = n => n.toLocaleString('de-DE');
+  const pct = n => (n>=0?'+':'−') + Math.abs(n).toFixed(1).replace('.',',') + ' %';
+
+  function valueOf(cat, year){
+    const y = cat.years.find(x=>x.year===year);
+    return y && !y.missing ? y.value : null;
+  }
+
+  // ---------- KPI tiles ----------
+  const kpiGrid = document.getElementById('kpiGrid');
+  categories.forEach(cat=>{
+    const v2025 = valueOf(cat,'2025');
+    const v2024 = valueOf(cat,'2024');
+    const h1 = valueOf(cat,'2026');
+    const delta = (v2025!=null && v2024!=null) ? (v2025-v2024)/v2024*100 : null;
+    const proj = h1!=null ? h1*2 : null;
+    const projDelta = (proj!=null && v2025!=null) ? (proj-v2025)/v2025*100 : null;
+
+    const tile = document.createElement('div');
+    tile.className = 'kpi-tile';
+    tile.innerHTML = `
+      <div class="kpi-cat"><i class="kpi-dot" style="background:${cat.color}"></i>${cat.label}</div>
+      <div class="kpi-value">${v2025!=null?fmt(v2025):'–'}</div>
+      ${delta!=null ? `<span class="kpi-delta">${delta>=0?'▲':'▼'} ${Math.abs(delta).toFixed(1).replace('.',',')} %</span>` : ''}
+      <div class="kpi-h1">1. HJ 2026: <b>${h1!=null?fmt(h1):'–'}</b>${projDelta!=null?` · Hochrechnung ${fmt(proj)} (${pct(projDelta)})`:''}</div>
+    `;
+    kpiGrid.appendChild(tile);
+  });
+
+  // ---------- chart panels ----------
+  const chartGrid = document.getElementById('chartGrid');
+  const YMAX = 2000;
+  const W=300, H=180, plotLeft=36, plotRight=290, plotTop=14, baseline=132;
+  const plotW = plotRight-plotLeft, plotH = baseline-plotTop;
+
+  categories.forEach(cat=>{
+    const n = cat.years.length;
+    const slotW = plotW/n;
+    const barW = 22;
+
+    let grid = '';
+    [0,500,1000,1500,2000].forEach(v=>{
+      const y = baseline - (v/YMAX*plotH);
+      grid += `<line x1="${plotLeft}" y1="${y}" x2="${plotRight}" y2="${y}" class="gridline"/>`;
+      if(v===0 || v===2000){
+        grid += `<text x="${plotLeft-6}" y="${y+3}" class="axis-label" text-anchor="end">${v===0?'0':fmt(v)}</text>`;
+      }
+    });
+
+    let marks = '';
+    let prevVal = null;
+    cat.years.forEach((y,i)=>{
+      const cx = plotLeft + slotW*i + slotW/2;
+
+      if(y.missing){
+        const size = 12;
+        marks += `<g class="hoverable" tabindex="0" data-tooltip="${y.note}">
+          <rect x="${cx-size/2}" y="${baseline-size}" width="${size}" height="${size}" rx="2.5"
+            fill="url(#hatch-${cat.key})" stroke="var(--muted)" stroke-width="1"/>
+        </g>`;
+      } else {
+        const h = (y.value/YMAX)*plotH;
+        const barY = baseline - h;
+        let tip = `${cat.label} · ${y.year}${y.partial?' (1. Halbjahr)':''}: ${fmt(y.value)}`;
+        if(prevVal!=null && !y.partial){
+          tip += ` · ${pct((y.value-prevVal)/prevVal*100)} ggü. Vorjahr`;
+        }
+        if(y.partial){
+          const proj = y.value*2;
+          tip += ` · Hochrechnung Gesamtjahr ≈ ${fmt(proj)}`;
+        }
+        marks += `<g class="hoverable" tabindex="0" data-tooltip="${tip}">
+          <rect x="${cx-barW/2}" y="${barY}" width="${barW}" height="${Math.max(h,1)}" rx="4" fill="${cat.color}" class="bar"/>`;
+        if(y.partial){
+          const proj = y.value*2;
+          const hProj = (proj/YMAX)*plotH;
+          const projY = baseline - hProj;
+          marks += `<rect x="${cx-barW/2}" y="${projY}" width="${barW}" height="${Math.max(hProj-h,0)}" rx="4" fill="none" stroke="${cat.color}" stroke-width="1.4" stroke-dasharray="2.5,3" class="proj-bar"/>`;
+        } else {
+          marks += `<text x="${cx}" y="${barY-6}" class="value-label" text-anchor="middle">${fmt(y.value)}</text>`;
+        }
+        marks += `</g>`;
+        prevVal = y.value;
+      }
+
+      marks += `<text x="${cx}" y="${baseline+15}" class="year-label" text-anchor="middle">${y.year}</text>`;
+      if(y.partial) marks += `<text x="${cx}" y="${baseline+26}" class="partial-label" text-anchor="middle">1. HJ</text>`;
+    });
+
+    const card = document.createElement('div');
+    card.className = 'chart-card';
+    card.innerHTML = `
+      <div class="chart-title"><i class="chart-dot" style="background:${cat.color}"></i>${cat.label}</div>
+      <svg viewBox="0 0 ${W} ${H}" class="panel-svg" role="img" aria-label="${cat.label}, Fallzahlen 2021 bis 2026">
+        <defs>
+          <pattern id="hatch-${cat.key}" width="4" height="4" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="4" stroke="var(--muted)" stroke-width="1.5"/>
+          </pattern>
+        </defs>
+        ${grid}
+        <line x1="${plotLeft}" y1="${baseline}" x2="${plotRight}" y2="${baseline}" class="baseline"/>
+        ${marks}
+      </svg>
+    `;
+    chartGrid.appendChild(card);
+  });
+
+  // ---------- Monatsverlauf pro Öffnungstag ----------
+  // Monatswerte Jan 2024 – Jun 2026 aus den Statistik-Dokumenten (null = kein Wert)
+  const MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  const START_YEAR = 2024;
+  const monthly = {
+    ambulanz: [173,138,111,116,108,126,141,69,112,135,163,84, 145,151,116,126,90,90,134,59,100,89,97,70, 93,73,115,82,77,124],
+    sa:       [20,13,30,3,67,16,45,97,81,76,53,29, 60,58,70,79,61,83,65,114,78,46,74,14, 72,37,32,67,53,68],
+    safahrt:  [3,4,4,2,6,5,8,8,8,8,8,3, 9,8,7,7,8,8,9,8,6,9,8,3, 8,8,7,8,6,8],
+    pz:       [200,219,246,113,102,113,88,30,88,110,135,177, 176,145,113,121,130,101,75,97,147,116,118,121, 112,116,65,56,34,35],
+    nue1:     [172,158,158,87,null,null,null,null,null,null,138,150, 197,177,160,70,null,null,null,null,null,null,156,190, 164,180,235,100,null,null],
+    nac:      [38,35,20,26,34,48,33,60,36,37,39,35, 56,89,53,41,27,40,71,22,35,90,45,32, 2,1,11,11,12,null],
+  };
+  // geschlossene Tage: 'key|Jahr|Monat' -> Anzahl
+  const closedDays = {
+    'ambulanz|2024|8': 15, 'ambulanz|2024|9': 2, 'ambulanz|2025|8': 8,
+    'pz|2024|4': 12, 'pz|2024|5': 7,
+    'nue1|2024|4': 15, 'nue1|2025|4': 15, 'nue1|2026|4': 15,
+  };
+  const trendSeries = [
+    { key:'ambulanz', label:'Ambulanz', color:'var(--c-ambulanz)' },
+    { key:'sa',       label:'Straßenambulanz Behandlungen', color:'var(--c-sa)' },
+    { key:'pz',       label:'Pflegezimmer', color:'var(--c-pz)' },
+    { key:'safahrt',  label:'Straßenambulanz Fahrten', color:'var(--c-safahrt)' },
+    { key:'nue1',     label:'Notübernachtung Lehrter Straße', color:'var(--c-nue1)', seasonal:true },
+    { key:'nac',      label:'Notübernachtung am Containerbahnhof', color:'var(--c-nac)' },
+  ];
+
+  const N = monthly.ambulanz.length;
+  const monthInfo = i => {
+    const year = START_YEAR + Math.floor(i/12), m = i%12 + 1;
+    return { year, m, days: new Date(year, m, 0).getDate() };
+  };
+  const dec = (v, d=2) => v.toLocaleString('de-DE', {minimumFractionDigits:d, maximumFractionDigits:d});
+
+  function perDay(key){
+    return monthly[key].map((v,i)=>{
+      if(v==null) return null;
+      const {year, m, days} = monthInfo(i);
+      const open = days - (closedDays[`${key}|${year}|${m}`] || 0);
+      return { raw:v, open, days, value: v/open };
+    });
+  }
+  // wie pandas rolling(3, min_periods=2): Fenster über Zeilen, Lücken zählen nicht
+  function rolling(vals){
+    return vals.map((_,i)=>{
+      const w = vals.slice(Math.max(0,i-2), i+1).filter(v=>v!=null);
+      return (vals[i]!=null && w.length>=2) ? w.reduce((a,b)=>a+b,0)/w.length : null;
+    });
+  }
+  function linreg(pts){
+    const n = pts.length, mx = pts.reduce((a,p)=>a+p.x,0)/n, my = pts.reduce((a,p)=>a+p.y,0)/n;
+    let sxy=0, sxx=0; pts.forEach(p=>{ sxy += (p.x-mx)*(p.y-my); sxx += (p.x-mx)**2; });
+    const slope = sxy/sxx; return { slope, intercept: my - slope*mx, mean: my };
+  }
+  function erf(x){ // Abramowitz-Stegun 7.1.26
+    const s = Math.sign(x); x = Math.abs(x);
+    const t = 1/(1+0.3275911*x);
+    const y = 1 - (((((1.061405429*t - 1.453152027)*t) + 1.421413741)*t - 0.284496736)*t + 0.254829592)*t*Math.exp(-x*x);
+    return s*y;
+  }
+  function mannKendall(pts){ // Kendall τ-b gegen die Zeit, Normalapproximation mit Bindungskorrektur
+    const n = pts.length; let S = 0;
+    for(let i=0;i<n;i++) for(let j=i+1;j<n;j++) S += Math.sign(pts[j].y - pts[i].y);
+    const counts = {}; pts.forEach(p=>{ const k = p.y.toFixed(9); counts[k]=(counts[k]||0)+1; });
+    let tieVar = 0, tiePairs = 0;
+    Object.values(counts).forEach(t=>{ tieVar += t*(t-1)*(2*t+5); tiePairs += t*(t-1)/2; });
+    const n0 = n*(n-1)/2;
+    const tau = S/Math.sqrt(n0*(n0-tiePairs));
+    const z = S/Math.sqrt((n*(n-1)*(2*n+5) - tieVar)/18);
+    const p = 1 - erf(Math.abs(z)/Math.SQRT2);
+    return { tau, p };
+  }
+  function niceStep(max){
+    const raw = max/4, mag = 10**Math.floor(Math.log10(raw)), f = raw/mag;
+    return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*mag;
+  }
+
+  const TW=460, TH=214, tL=36, tR=452, tT=22, tB=176;
+  const tPW = tR-tL, tPH = tB-tT, slot = tPW/N;
+  const xAt = pos => tL + pos*slot;           // pos in Monaten ab Jan 2024
+  const xMid = i => xAt(i + 0.5);             // Punkt in Monatsmitte
+
+  // Kältehilfesaison 01.11. – 15.04.
+  const seasons = [];
+  for(let y=START_YEAR-1; y<START_YEAR+3; y++){
+    const s = (y-START_YEAR)*12 + 10, e = (y+1-START_YEAR)*12 + 3 + 15/30;
+    const a = Math.max(0,s), b = Math.min(N,e);
+    if(b>a) seasons.push({a, b, label:`${String(y).slice(2)}/${String(y+1).slice(2)}`, from:s, to:e});
+  }
+
+  const trendGrid = document.getElementById('trendGrid');
+  trendSeries.forEach(ser=>{
+    const pd = perDay(ser.key);
+    const vals = pd.map(p=>p?p.value:null);
+    const roll = rolling(vals);
+    const maxV = Math.max(...vals.filter(v=>v!=null));
+    const step = niceStep(maxV);
+    const yMax = Math.ceil(maxV/step)*step;
+    const yAt = v => tB - v/yMax*tPH;
+    const digits = step < 0.1 ? 2 : step < 1 ? 1 : 0;
+
+    let svg = '';
+    seasons.forEach(s=>{
+      svg += `<rect x="${xAt(s.a)}" y="${tT}" width="${xAt(s.b)-xAt(s.a)}" height="${tPH}" class="season-band"/>`;
+      if(s.b - s.a > 2.5) svg += `<text x="${(xAt(s.a)+xAt(s.b))/2}" y="${tT-5}" class="season-label" text-anchor="middle">Kältehilfe ${s.label}</text>`;
+    });
+    for(let v=0; v<=yMax+1e-9; v+=step){
+      const y = yAt(v);
+      if(v>0) svg += `<line x1="${tL}" y1="${y}" x2="${tR}" y2="${y}" class="gridline"/>`;
+      svg += `<text x="${tL-6}" y="${y+3}" class="axis-label" text-anchor="end">${v===0?'0':dec(v,digits)}</text>`;
+    }
+    svg += `<line x1="${tL}" y1="${tB}" x2="${tR}" y2="${tB}" class="baseline"/>`;
+    for(let i=0;i<N;i++){
+      const {year, m} = monthInfo(i);
+      if(m===1){
+        svg += `<line x1="${xAt(i)}" y1="${tB}" x2="${xAt(i)}" y2="${tB+5}" class="baseline"/>`;
+        svg += `<text x="${xAt(i)+3}" y="${tB+16}" class="year-label">${year}</text>`;
+      } else if(m===7){
+        svg += `<line x1="${xAt(i)}" y1="${tB}" x2="${xAt(i)}" y2="${tB+3}" class="baseline"/>`;
+        svg += `<text x="${xAt(i)+3}" y="${tB+16}" class="axis-label">Jul</text>`;
+      }
+    }
+
+    // Linien, bei Lücken unterbrochen
+    const path = arr => {
+      let d = '', pen = false;
+      arr.forEach((v,i)=>{ if(v==null){ pen=false; return; } d += `${pen?'L':'M'}${xMid(i).toFixed(1)},${yAt(v).toFixed(1)}`; pen = true; });
+      return d;
+    };
+    svg += `<path d="${path(vals)}" fill="none" stroke="${ser.color}" stroke-width="1.1" opacity=".55"/>`;
+    svg += `<path d="${path(roll)}" fill="none" stroke="${ser.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+    // Trend
+    const pts = vals.map((v,i)=>v==null?null:{x:i, y:v}).filter(Boolean);
+    let chip = '';
+    let reg = null;
+    if(!ser.seasonal){
+      const x0 = pts[0].x;
+      const rp = pts.map(p=>({x:p.x-x0, y:p.y}));
+      reg = linreg(rp);
+      const mk = mannKendall(rp);
+      const perYear = reg.slope*12/reg.mean*100;
+      const sig = mk.p < 0.05;
+      const pTxt = mk.p < 0.001 ? '< 0,001' : dec(mk.p, 3);
+      svg += `<line x1="${xMid(pts[0].x)}" y1="${yAt(reg.intercept)}" x2="${xMid(pts[pts.length-1].x)}" y2="${yAt(reg.intercept + reg.slope*(pts[pts.length-1].x-x0))}" class="reg-line"/>`;
+      chip = sig
+        ? `<span class="trend-chip">${perYear>=0?'▲':'▼'} ${pct(perYear).replace(' %',' %/Jahr')} · p ${pTxt.startsWith('<')?pTxt:'= '+pTxt}</span>`
+        : `<span class="trend-chip weak">kein sign. Trend · ${pct(perYear).replace(' %',' %/Jahr')} · p = ${pTxt}</span>`;
+      reg.x0 = x0;
+    } else {
+      // Tagesdurchschnitt je Saison
+      const bySeason = seasons.map(s=>{
+        let sum=0, open=0, count=0;
+        pd.forEach((p,i)=>{ if(p && i>=Math.floor(s.from) && i<Math.ceil(s.to)){ sum+=p.raw; open+=p.open; count++; } });
+        return { label:s.label, v: open? sum/open : null, full: s.from>=0 };
+      }).filter(s=>s.v!=null);
+      chip = `<span class="trend-chip">${bySeason.map(s=>`${s.label}${s.full?'':'*'}: ${dec(s.v)}`).join(' · ')} /Tag</span>`;
+    }
+
+    // Hover-Zonen je Monat
+    for(let i=0;i<N;i++){
+      const p = pd[i];
+      const {year, m} = monthInfo(i);
+      let tip = `${ser.label} · ${MONTHS[m-1]} ${year}\n`;
+      if(!p){
+        tip += ser.seasonal ? 'geschlossen (außerhalb Kältehilfe)' : 'kein Wert erfasst';
+      } else {
+        tip += `${fmt(p.raw)} im Monat` + (p.open!==p.days ? ` (${p.open} von ${p.days} Tagen offen)` : '') +
+               `\n${dec(p.value)} pro Öffnungstag`;
+        if(roll[i]!=null) tip += ` · 3-M-Ø ${dec(roll[i])}`;
+      }
+      const cx = xMid(i);
+      svg += `<g class="hit hoverable" tabindex="0" data-tooltip="${tip}">
+        <rect x="${xAt(i)}" y="${tT}" width="${slot}" height="${tPH}" fill="transparent"/>
+        <line x1="${cx}" y1="${tT}" x2="${cx}" y2="${tB}" class="hit-guide"/>
+        ${p ? `<circle cx="${cx}" cy="${yAt(p.value)}" r="2.2" fill="${ser.color}" class="hit-dot"/>` : ''}
+      </g>`;
+    }
+
+    const card = document.createElement('div');
+    card.className = 'chart-card';
+    card.innerHTML = `
+      <div class="chart-title"><i class="chart-dot" style="background:${ser.color}"></i>${ser.label}</div>
+      <div class="chart-head">
+        ${chip}
+        <span class="chart-sub">${ser.seasonal ? 'Saison-Ø pro Öffnungstag (* ab Jan 2024)' : 'pro Öffnungstag'}</span>
+      </div>
+      <svg viewBox="0 0 ${TW} ${TH}" class="panel-svg" role="img" aria-label="${ser.label}, Monatswerte pro Öffnungstag Januar 2024 bis Juni 2026">
+        ${svg}
+      </svg>
+    `;
+    trendGrid.appendChild(card);
+  });
+
+  // ---------- tooltip wiring ----------
+  const tooltip = document.getElementById('tooltip');
+  function showTooltip(text, x, y){
+    tooltip.textContent = text;
+    tooltip.style.left = x + 'px';
+    tooltip.style.top = y + 'px';
+    tooltip.classList.add('visible');
+  }
+  function hideTooltip(){ tooltip.classList.remove('visible'); }
+
+  [chartGrid, trendGrid].forEach(grid=>{
+    grid.addEventListener('pointerover', e=>{
+      const t = e.target.closest('.hoverable');
+      if(t) showTooltip(t.dataset.tooltip, e.clientX, e.clientY);
+    });
+    grid.addEventListener('pointermove', e=>{
+      if(tooltip.classList.contains('visible')) {
+        const t = e.target.closest('.hoverable');
+        if(t) { tooltip.style.left = e.clientX+'px'; tooltip.style.top = e.clientY+'px'; }
+      }
+    });
+    grid.addEventListener('pointerout', e=>{
+      if(e.target.closest('.hoverable')) hideTooltip();
+    });
+    grid.addEventListener('focusin', e=>{
+      const t = e.target.closest('.hoverable');
+      if(t){
+        const r = t.getBoundingClientRect();
+        showTooltip(t.dataset.tooltip, r.left + r.width/2, r.top);
+      }
+    });
+    grid.addEventListener('focusout', e=>{
+      if(e.target.closest('.hoverable')) hideTooltip();
+    });
+  });
+
+  // ---------- table ----------
+  const years = ['2021','2022','2023','2024','2025','2026'];
+  const table = document.getElementById('dataTable');
+  let thead = '<thead><tr><th>Jahr</th>' + categories.map(c=>`<th>${c.label}</th>`).join('') + '</tr></thead>';
+  let rows = years.map(yr=>{
+    const cells = categories.map(cat=>{
+      const y = cat.years.find(x=>x.year===yr);
+      if(y.missing) return `<td class="cell-note">${(y.note.split(': ').slice(1).join(': ') || y.note).replace('nicht getrennt erfasst – ', '')}</td>`;
+      return `<td>${fmt(y.value)}${y.partial?' *':''}</td>`;
+    }).join('');
+    return `<tr><td>${yr}${yr==='2026'?' *':''}</td>${cells}</tr>`;
+  }).join('');
+  table.innerHTML = thead + '<tbody>' + rows + '</tbody>';
+})();
+</script>
